@@ -1,48 +1,32 @@
 import Destination from "../models/Destination.js";
 
-
-// distinct method
-// export const showAllDestinations = async (req, res) => {
-//     const states = await Destination.distinct("state");
-//     res.status(200).json(states);
-// }
-
-// CountDocuments
-// export const showAllDestinations = async (req, res) => {
-//     const states = await Destination.countDocuments({
-//         state: "Karnataka"
-//     });
-//     res.status(200).json(states);
-// }
-
-// sort method
-// export const showAllDestinations = async (req, res) => {
-//     const states = await Destination.find().sort({distance: -1});
-//     res.status(200).json(states);
-// }
-
-// limit method
-export const showAllDestinations = async (req, res) => {
-    const states = await Destination.find().sort({distance: -1}).limit(3);
-    res.status(200).json(states);
-}
-
-export const showDestinationById = async (req, res) => {
-    const destination = await Destination.findById(req.params.id);
-    res.status(200).json(destination);
-}
-
+// Challenge 1 solution 
 export const createDestination = async (req, res) => {
-    const destination = await Destination.create(req.body);
+    const destination = await Destination.create({
+       name: "Gokarna",
+       country: "India",
+       city: "Gokarna",
+       category: "Beach",
+       price: 15000,
+       duration: 3,
+       rating: 4.5 
+    });
     res.status(201).json(destination);
 }
 
-//findByIdAndUpdate
+// Challenge 2 solution
+// export const showAllDestinations = async (req, res) => {
+//     const destinations = await Destination.find();
+//     res.status(200).json(destinations);
+// }
+// Challenge 5 Solution
 // export const updateDestination = async (req, res) => {
-//     const destination = await Destination.findByIdAndUpdate(
-//         req.params.id,
+//     const destination = await Destination.findOneAndUpdate(
 //         {
-//             $set: req.body
+//             name : req.params.id
+//         },
+//         {
+//             price: 20000
 //         },
 //         {
 //             new: true
@@ -50,15 +34,14 @@ export const createDestination = async (req, res) => {
 //     )
 //     res.status(200).json(destination);
 // }
-
-// findOneAndUpdate
+// Challenge 7 solution
 export const updateDestination = async (req, res) => {
-    const destination = await Destination.findOneAndUpdate(
+    const destination = await Destination.updateMany(
         {
-            name : req.params.id
+            category : req.params.id
         },
         {
-            $set: req.body
+            $inc : {price: -1000}
         },
         {
             new: true
@@ -66,17 +49,24 @@ export const updateDestination = async (req, res) => {
     )
     res.status(200).json(destination);
 }
-
-// findByIdAndDelete
-// export const deleteDestination = async (req, res) => {
-//     const destination = await Destination.findByIdAndDelete(
-//         req.params.id
-//     )
-//     res.status(200).json(destination);
-// }
-
-// findOneAndDelete
+// Challenge 9 solution
 export const deleteDestination = async (req, res) => {
+    const destination = await Destination.deleteMany(
+        {
+            rating: {
+                $lte: 3.5
+            }
+        }
+    )
+    res.status(200).json(destination);
+}
+// Challenge 11 solution
+export const showAllDestinations = async (req, res) => {
+    const destinations = await Destination.find().sort({price: 1}).limit(5);
+    res.status(200).json(destinations);
+}
+// Challenge 10 solution
+export const deleteAgra = async (req, res) => {
     const destination = await Destination.findOneAndDelete(
         {
             name: req.params.id

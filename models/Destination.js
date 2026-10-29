@@ -1,12 +1,15 @@
-import mongoose from "mongoose"
+import mongoose from "mongoose";
 
 const destinationSchema = new mongoose.Schema({
-    name: String,
-    state: String,
-    distance: Number,
-    rating: Number
-})
+  name: String,
+  country: String,
+  city: String,
+  category: String,
+  price: Number,
+  duration: Number,
+  rating: Number
+});
 
-const Destination = new mongoose.model("Destination", destinationSchema);
+const Destination = mongoose.model("Destination", destinationSchema);
 
 export default Destination;
